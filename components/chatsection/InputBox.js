@@ -11,17 +11,25 @@ function InputBox({ messages }) {
   const [message, setMessage] = useState("");
 
   const updateMsg = async (body) => {
-    fetch("api/message", {
+    const res = await fetch("api/message", {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
     });
-
-    const allMsg = await fetch(`api/message/${conversations.convoId}`);
-    const allMsgJson = await allMsg.json();
-    return allMsgJson;
+    const result = await res.json();
+    fetch("api/pusher", {
+      method: "POST",
+      body: JSON.stringify({
+        ...body,
+        _id: result.insertedId,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    });
+    return [...messages, body];
   };
 
   const handleSubmit = async (e) => {
@@ -33,21 +41,9 @@ function InputBox({ messages }) {
       senderId: session.user.id,
       conversationId: conversations.convoId,
       message: message,
+      created_at: new Date(),
     };
-
-    let optimdata = [...messages, body];
-    const options = { optimisticData: optimdata, rollbackOnError: true };
-
-    console.log(message);
-    const newMsg = await mutate(
-      "/api/message/" + conversations.convoId,
-      updateMsg(body),
-      options
-    );
-
-    mutate("/api/message/last_message/" + conversations.convoId, () => {
-      newMsg[newMsg.length - 1];
-    });
+    updateMsg(body);
     setMessage("");
   };
   if (status === "loading") return <div>Loading...</div>;

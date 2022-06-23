@@ -1,14 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useConversations } from "../../context/ConvoProvider";
 import TopSection from "./TopSection";
 import Pusher from "pusher-js";
 import ChatBubbleRe from "./ChatBubbleRe";
 import ChatBubbleSe from "./ChatBubbleSe";
 import InputBox from "./InputBox";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { useSession } from "next-auth/react";
 
 function ChatSection() {
+  const scrollRef = useRef();
   const { conversations } = useConversations();
   const { data: session, status } = useSession();
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -28,12 +29,21 @@ function ChatSection() {
         params: { data: session.user?.id },
       },
     });
+
     const channel = pusher.subscribe("presence-" + conversations.convoId);
     channel.bind("pusher:subscription_succeeded", function () {
       console.log("Subscribed");
+      scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     });
     channel.bind("message-rev", (data) => {
       console.log(data);
+      mutate("/api/message/" + conversations.convoId, (message) => {
+        return [...message, data];
+      });
+      mutate("/api/message/last_message/" + conversations.convoId, () => {
+        return data;
+      });
+      scrollRef?.current.scrollIntoView({ behavior: "smooth" });
     });
     return () => {
       channel.unbind();
@@ -41,7 +51,12 @@ function ChatSection() {
       // pusher.unsubscribe('channel_name2')
     };
   }, [conversations]);
-  if (!conversations) return <div>No Conversations</div>;
+  if (!conversations)
+    return (
+      <div className="flex justify-center items-center text-gray-400 text-xl h-screen w-full">
+        No Conversations Selected
+      </div>
+    );
   if (status === "loading") return <div>Loading...</div>;
   if (!messages) return <div>No Messages</div>;
 
@@ -65,21 +80,25 @@ function ChatSection() {
           if (index === messages.length - 1) prev = 1;
           if (message.senderId === session.user.id)
             return (
-              <ChatBubbleSe
-                message={message}
-                key={message._id}
-                prev={prev}
-                image={session.user.image}
-              />
+              <div ref={scrollRef}>
+                <ChatBubbleSe
+                  message={message}
+                  key={message._id}
+                  prev={prev}
+                  image={session.user.image}
+                />
+              </div>
             );
           else {
             return (
-              <ChatBubbleRe
-                message={message}
-                key={message._id}
-                prev={prev}
-                image={conversations.image}
-              />
+              <div ref={scrollRef}>
+                <ChatBubbleRe
+                  message={message}
+                  key={message._id}
+                  prev={prev}
+                  image={conversations.image}
+                />
+              </div>
             );
           }
         })}

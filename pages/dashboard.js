@@ -21,7 +21,7 @@ export default function Dashboard() {
     <div className="flex md:flex-row h-screen w-screen bg-[#303940] ">
       <NavBar selectednav={selectednav} setSelectednav={setSelectednav} />
       {/* people list */}
-      <div className="flex flex-col h-full bg-[#303940] p-5 space-y-6 w-full md:w-[33rem] ">
+      <div className="flex flex-col h-full bg-[#303940] p-5 space-y-6 w-full md:w-[33rem]">
         {
           {
             profile: <Profile />,

@@ -34,7 +34,7 @@ function ConversationBubble({ person }) {
             })}
           </div>
         </div>
-        <div className="truncate text-gray-400 text-sm">
+        <div className="truncate text-gray-400 text-sm w-[15rem]">
           {last_message?.message}
         </div>
       </div>
