@@ -88,7 +88,7 @@ function Modal({ friends }) {
           >
             <span>Cancel</span>
           </Button>
-          <Button className="bg-lightblue" onClick={handleOpen}>
+          <Button className="bg-lightblue" onClick={handleSubmit}>
             <span>Confirm</span>
           </Button>
         </DialogFooter>
