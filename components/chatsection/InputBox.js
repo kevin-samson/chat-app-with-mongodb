@@ -51,7 +51,7 @@ function InputBox({ messages }) {
     <form onSubmit={handleSubmit}>
       <div className="flex flex-row bottom-0 w-full h-20 bg-inherit border-t-2 border-secondary items-center justify-between p-8 md:w-full">
         <input
-          type="text"
+          type="search"
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           className="bg-secondary w-full mr-8 rounded-lg text-gray-300 border-none focus:ring-0"
