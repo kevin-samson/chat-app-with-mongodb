@@ -15,11 +15,14 @@ function ChatBubbleSe({ message, prev, image }) {
             </div>
           </div>
           {prev ? (
-            <img
-              src={image}
-              alt="My profile"
-              className="order-2 h-6 w-6 rounded-full"
-            />
+            <>
+              <img
+                src={image}
+                alt="My profile"
+                className="order-2 h-6 w-6 rounded-full"
+                referrerpolicy="no-referrer"
+              />
+            </>
           ) : null}
         </div>
       </div>

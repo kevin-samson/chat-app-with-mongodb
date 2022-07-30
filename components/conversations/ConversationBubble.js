@@ -14,15 +14,21 @@ function ConversationBubble({ person }) {
   return (
     <button
       type="button"
-      className={` h-[5rem] rounded-sm flex flex-row items-center p-4 hover:bg-secondary transition duration-150 ease-in-out w-full ${
-        conversations?.convoId === person.convoId ? "bg-secondary" : null
+      className={` h-[5rem] rounded-md flex flex-row items-center p-4 hover:bg-secondary transition duration-150 ease-in-out w-full ${
+        conversations?.convoId === person.convoId
+          ? "bg-secondary shadow-sm"
+          : null
       }`}
       key={person.id}
       onClick={() => {
         setConversations({ ...person, selected: true });
       }}
     >
-      <img src={person.image} className="h-11 w-11 rounded-full mr-5" />
+      <img
+        src={person.image}
+        className="h-11 w-11 rounded-full mr-5"
+        referrerpolicy="no-referrer"
+      />
       <div className="block truncate text-left w-full">
         <div className="flex flex-row items-center justify-between space-x-2">
           <strong className="text-gray-200 font-semibold">{person.name}</strong>

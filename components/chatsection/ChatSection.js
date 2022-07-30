@@ -7,6 +7,8 @@ import ChatBubbleSe from "./ChatBubbleSe";
 import InputBox from "./InputBox";
 import useSWR, { mutate } from "swr";
 import { useSession } from "next-auth/react";
+import ReactLoading from "react-loading";
+import { sendError } from "next/dist/server/api-utils";
 
 function ChatSection() {
   const scrollRef = useRef();
@@ -18,6 +20,7 @@ function ChatSection() {
     fetcher,
     { revalidateOnFocus: false }
   );
+  if (!session) return null;
   Pusher.logToConsole = true;
   useEffect(() => {
     if (!session) return;
@@ -36,7 +39,6 @@ function ChatSection() {
       scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     });
     channel.bind("message-rev", (data) => {
-      console.log(data);
       mutate("/api/message/" + conversations.convoId, (message) => {
         return [...message, data];
       });
@@ -53,12 +55,24 @@ function ChatSection() {
   }, [conversations]);
   if (!conversations)
     return (
-      <div className="flex justify-center items-center text-gray-400 text-xl h-screen w-full">
-        No Conversations Selected
+      <div className="flex flex-col justify-center items-center text-gray-400 text-xl h-screen w-full">
+        <span>No Conversations Selected.</span>
+        <span>Select one to get started.</span>
       </div>
     );
-  if (status === "loading") return <div>Loading...</div>;
-  if (!messages) return <div>No Messages</div>;
+  if (status === "loading")
+    return (
+      <div className="w-full h-screen flex flex-col items-center justify-center bg-[#303940] space-y-10">
+        <ReactLoading
+          type={"spin"}
+          color={"#7368EF"}
+          height={"120px"}
+          width={"120px"}
+        />
+        <div className="text-grey-400 text-5xl">Loading</div>
+      </div>
+    );
+  if (!messages) return null;
 
   return (
     <div className="flex flex-col w-full h-screen bg-chatbackground shadow-lg">

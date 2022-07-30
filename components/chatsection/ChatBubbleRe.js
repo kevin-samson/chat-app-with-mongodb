@@ -18,6 +18,7 @@ function ChatBubbleRe({ message, prev, image }) {
             src={image}
             alt="My profile"
             className="order-1 h-6 w-6 rounded-full"
+            referrerpolicy="no-referrer"
           />
         ) : null}
       </div>

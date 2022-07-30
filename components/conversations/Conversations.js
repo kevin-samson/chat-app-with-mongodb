@@ -12,19 +12,16 @@ export default function Conversations() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
   const { data: convos } = useSWR(
     status !== "loading" ? "/api/conversation/" + session?.user.id : null,
-    fetcher,
-    { revalidateOnFocus: false }
+    fetcher
   );
 
   useEffect(() => {
     if (convos && status !== "loading") {
-      console.log("The convos", convos);
       convos.forEach(async (convo) => {
         const friendId = convo.members.filter((member) => {
           return member != session.user.id;
         });
-        console.log("The friendId", friendId);
-        const respone = await fetch(`/api/user/${friendId}`);
+        const respone = await fetch(`/api/user/${friendId[0]}`);
         const userInfo = await respone.json();
         if (userInfo) {
           setPeople((prevPeople) => [
@@ -62,7 +59,18 @@ export default function Conversations() {
     filterPeople(name);
   }, [name]);
 
-  if (!convos && !foundItems && session) return <div key={432}>loading...</div>;
+  if (!convos && !foundItems && session)
+    return (
+      <div className="w-full h-screen flex flex-col items-center justify-center bg-[#303940] space-y-10">
+        <ReactLoading
+          type={"spin"}
+          color={"#7368EF"}
+          height={"120px"}
+          width={"120px"}
+        />
+        <div className="text-grey-400 text-5xl">Loading</div>
+      </div>
+    );
   return (
     <>
       <h1 className="text-2xl font-sans font-semibold text-gray-200">Chats</h1>
@@ -87,7 +95,7 @@ export default function Conversations() {
           onChange={(e) => setName(e.target.value)}
           className="bg-inherit focus:outline-none w-full text-gray-300 outline-none border-none"
           placeholder="Search for a friend"
-        ></input>
+        />
       </div>
       <h1 className="text-lg font-sans font-semibold text-gray-200">Recent</h1>
       <div className="h-full w-full overflow-y-auto space-y-1">
@@ -96,7 +104,9 @@ export default function Conversations() {
             <ConversationBubble key={person.id} person={person} />
           ))
         ) : (
-          <h1>no items</h1>
+          <h1 className="text-gray-300 text-center text-lg">
+            No Friends found
+          </h1>
         )}
 
         <div className=" h-[74px] md:hidden"></div>

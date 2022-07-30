@@ -10,7 +10,6 @@ export default async function handler(req, res) {
     const result = await usersCollection.findOne({
       _id: ObjectId(userId),
     });
-    console.log("User result", result);
     res.status(200).json(result);
   } catch (e) {
     console.log(e);
