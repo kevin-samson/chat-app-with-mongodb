@@ -48,8 +48,29 @@ function InputBox({ messages }) {
   };
   if (status === "loading") return <div>Loading...</div>;
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} autocomplete="off">
       <div className="flex flex-row bottom-0 w-full h-20 bg-inherit border-t-2 border-secondary items-center justify-between p-8 md:w-full">
+        <input
+          name="disable-pwd-mgr-1"
+          type="password"
+          id="disable-pwd-mgr-1"
+          style="display: none;"
+          value="disable-pwd-mgr-1"
+        />
+        <input
+          name="disable-pwd-mgr-2"
+          type="password"
+          id="disable-pwd-mgr-2"
+          style="display: none;"
+          value="disable-pwd-mgr-2"
+        />
+        <input
+          name="disable-pwd-mgr-3"
+          type="password"
+          id="disable-pwd-mgr-3"
+          style="display: none;"
+          value="disable-pwd-mgr-3"
+        />
         <input
           type="text"
           onChange={(e) => setMessage(e.target.value)}
