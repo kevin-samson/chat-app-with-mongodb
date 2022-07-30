@@ -2,6 +2,9 @@ import clientPromise from "../lib/mongodb";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import ReactLoading from "react-loading";
+import { MdOutlineChat } from "react-icons/md";
+import help from "../public/help.jpeg";
+import Image from "next/image";
 
 export default function Home() {
   const { status } = useSession();
@@ -23,12 +26,42 @@ export default function Home() {
             </div>
           </>
         ) : (
-          <>
-            Not connected
-            <button onClick={() => signIn("google")}>
-              Sign in with Google
-            </button>
-          </>
+          <main className="h-screen bg-gradient-to-b from-purple-800 to-gray-700 mx-0 overflow-auto">
+            <div className="px-5 py-10 md:px-10 md:px-15 flex flex-col">
+              <div className="flex items-center">
+                <MdOutlineChat className="text-grey-300 h-7 w-7" />
+                <h1 className="text-xl text-grey-300 font-bold">Chat</h1>
+                <h2 className="text-xl text-grey-300 ml-1">app</h2>
+              </div>
+              <div className="md:flex">
+                <div className="flex flex-col mt-24 mx-14 ">
+                  <h1 className="flex flex-col text-justify text-grey-300 text-5xl ">
+                    Have your best chat
+                  </h1>
+                  <h2 className="text-grey-300 mt-5">Fast,easy and free</h2>
+                  <button
+                    onClick={() => signIn("google")}
+                    className="bg-purple-600 rounded-xl p-3 mt-5 w-2/3 h-auto"
+                  >
+                    <h3 className="text-grey-300">Sign in with Google</h3>
+                  </button>
+                </div>
+                <div className="mt-12">
+                  <Image
+                    src={help}
+                    height={800}
+                    className="rounded-lg object-contain w-1/2 h-1/2"
+                  />
+                </div>
+              </div>
+            </div>
+            {/* <div className="mx-20">
+              Not connected
+              <button onClick={() => signIn("google")}>
+                Sign in with Google
+              </button>
+            </div> */}
+          </main>
         )}
       </main>
     </div>

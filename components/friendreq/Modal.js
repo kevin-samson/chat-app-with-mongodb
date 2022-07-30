@@ -33,7 +33,7 @@ function Modal({ friends }) {
       } else {
         const body = {
           senderId: session?.user.id,
-          senderEmail: session?.user.email,
+          senderEmail: session?.user.email.toLowerCase(),
           resEmail: email,
         };
         fetch("api/friendreq", {
@@ -44,7 +44,7 @@ function Modal({ friends }) {
           },
         });
         mutate(
-          session && "/api/friendreq/" + session.user.email,
+          session && "/api/friendreq/" + session.user.email.toLowerCase(),
           (reqs) => {
             return [...reqs, body];
           },
