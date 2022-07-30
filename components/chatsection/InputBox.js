@@ -54,6 +54,7 @@ function InputBox({ messages }) {
         <input type="text" className="hidden" />
         <input type="text" className="hidden" />
         <input
+          type="text"
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           className="bg-secondary w-full mr-8 rounded-lg text-gray-300 border-none focus:ring-0"
