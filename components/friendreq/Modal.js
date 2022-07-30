@@ -64,12 +64,11 @@ function Modal({ friends }) {
         className="h-5 w-5 text-gray-400 mb-8 cursor-pointer"
         onClick={handleOpen}
       />
-
-      <Dialog open={open} handler={handleOpen} className="bg-darker">
-        <DialogHeader className="text-grey-400">Add Contacts</DialogHeader>
-        <DialogBody className="flex flex-col border-secondary border-t border-b">
-          Enter the email of your friend
-          <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+        <Dialog open={open} handler={handleOpen} className="bg-darker">
+          <DialogHeader className="text-grey-400">Add Contacts</DialogHeader>
+          <DialogBody className="flex flex-col border-secondary border-t border-b">
+            Enter the email of your friend
             <input
               onChange={(e) => setEmail(e.target.value)}
               type="text"
@@ -77,22 +76,22 @@ function Modal({ friends }) {
               placeholder="Enter the text"
             />
             <input type="submit" className="hidden" />
-          </form>
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen}
-            className="mr-1"
-          >
-            <span>Cancel</span>
-          </Button>
-          <Button className="bg-lightblue" onClick={handleSubmit}>
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
-      </Dialog>
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen}
+              className="mr-1"
+            >
+              <span>Cancel</span>
+            </Button>
+            <Button className="bg-lightblue" type="submit">
+              <span>Confirm</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
+      </form>
     </>
   );
 }
