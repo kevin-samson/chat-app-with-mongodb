@@ -1,20 +1,14 @@
-import Head from "next/head";
 import clientPromise from "../lib/mongodb";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import ReactLoading from "react-loading";
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   if (status === "authenticated") router.push("/dashboard");
   return (
     <div>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main>
         {status === "authenticated" ? (
           <>
