@@ -51,6 +51,8 @@ function InputBox({ messages }) {
     <form onSubmit={handleSubmit} autocomplete="off">
       <div className="flex flex-row bottom-0 w-full h-20 bg-inherit border-t-2 border-secondary items-center justify-between p-8 md:w-full">
         <input type="text" className="hidden" />
+        <input type="text" className="hidden" />
+        <input type="text" className="hidden" />
         <input
           type="text"
           onChange={(e) => setMessage(e.target.value)}
